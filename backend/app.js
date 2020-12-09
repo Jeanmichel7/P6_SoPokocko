@@ -33,7 +33,7 @@ app.use(bodyParser.json());
 //sers un dossier static (chemin : )
 app.use('/images', express.static(path.join(__dirname, 'images')));
 //Route Thing
-app.use('/api/stuff', stuffRoutes);
+app.use('/api/sauces', stuffRoutes);
 //Route user
 app.use('/api/auth', userRoutes);
 

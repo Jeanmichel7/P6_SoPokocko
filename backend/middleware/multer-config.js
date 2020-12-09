@@ -20,7 +20,8 @@ const storage = multer.diskStorage({
         // extension = élement du dico avec le mime type du fichier envoyé par le front
         const extension = MIME_TYPES[file.mimetype];
         // créé filenam ( name+date.jpg)
-        callback(null, name + Date.now() + '.' + extension);
+        const nameSansExtension = name.split('.')[0];
+        callback(null, nameSansExtension + Date.now() + '.' + extension);
     }
 });
 

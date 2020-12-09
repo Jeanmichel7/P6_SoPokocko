@@ -5,16 +5,17 @@ const fs = require('fs');
 //exports les controlers
 exports.createThing = (req, res, next) => {
     //exrait l'objet
-    const thingObject = JSON.parse(req.body.thing);
+    const thingObject = JSON.parse(req.body.sauce);
     delete thingObject._id;
-    const thing = new Thing({
+    console.log(req.file.filename);
+    const sauce = new Thing({
         //title: req.body.title, etc... ou 
         ...thingObject,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
-
+    console.log(sauce);
     // méthode save qui enregostre le Thing dans la base de donné
-    thing.save()
+    sauce.save()
         .then(() => res.status(201).json({ message: 'Objet enregistré' }))
         .catch(error => res.status(400).json({ error }));
 };
@@ -23,7 +24,7 @@ exports.createThing = (req, res, next) => {
 exports.modifieStuff = (req, res, next) => {
     const thingObject = req.file ?
         {
-            ...JSON.parse(req.body.thing),
+            ...JSON.parse(req.body.sauce),
             imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
         } : {
             ...req.body
