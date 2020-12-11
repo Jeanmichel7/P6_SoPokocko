@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 // importla logique métier
-const stuffCtrl = require('../controllers/stuff');
+const stuffCtrl = require('../controllers/sauce');
 // import la logique d'enthautification qu'on rajoute sur les router
 const auth = require('../middleware/auth');
 // gère les fichiers entrant 
