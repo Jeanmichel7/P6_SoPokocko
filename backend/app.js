@@ -9,12 +9,13 @@ const app = express();
 //chemin du systeme de fichier
 const path = require('path');
 console.log(path);
+require('dotenv').config()
 
 const stuffRoutes = require('./routes/stuff');
 const userRoutes = require('./routes/user');
 
 //connect au cluster - base de donnée
-mongoose.connect('mongodb+srv://nonx:jmr@cluster0.fde6e.mongodb.net/<dbname>?retryWrites=true&w=majority',
+mongoose.connect(process.env.DB_URL,
     { useNewUrlParser: true,
         useUnifiedTopology: true })
     .then(() => console.log('Connexion à MongoDB réussie !'))

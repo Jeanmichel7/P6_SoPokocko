@@ -1,15 +1,15 @@
 // import le model
-const Thing = require('../models/Thing');
+const Sauce = require('../models/Sauce');
 const fs = require('fs');
 
 //exports les controlers
-exports.createThing = (req, res, next) => {
+exports.createSauce = (req, res, next) => {
     //exrait l'objet
-    const thingObject = JSON.parse(req.body.sauce);
-    delete thingObject._id;
-    const sauce = new Thing({
+    const sauceObject = JSON.parse(req.body.sauce);
+    delete sauceObject._id;
+    const sauce = new Sauce({
         //title: req.body.title, etc... ou 
-        ...thingObject,
+        ...sauceObject,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
         likes: 0,
         dislikes: 0,
@@ -17,7 +17,6 @@ exports.createThing = (req, res, next) => {
         usersDisliked: ""
 
     });
-    console.log(sauce);
     // méthode save qui enregostre le Thing dans la base de donné
     sauce.save()
         .then(() => res.status(201).json({ message: 'Objet enregistré' }))
@@ -25,8 +24,8 @@ exports.createThing = (req, res, next) => {
 };
 
 // met a jour avec modif
-exports.modifieStuff = (req, res, next) => {
-    const thingObject = req.file ?
+exports.modifySauce = (req, res, next) => {
+    const sauceObject = req.file ?
         {
             ...JSON.parse(req.body.sauce),
             imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
@@ -34,20 +33,20 @@ exports.modifieStuff = (req, res, next) => {
             ...req.body
         };
 
-    Thing.updateOne({ _id: req.params.id }, { ...thingObject, _id: req.params.id })
+    Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
         .then(() => res.status(200).json({ message: 'Objet modifié' }))
         .catch(error => res.status(400).json({ error }));
 }
 
-exports.deleteStuff = (req, res, next) => {
+exports.deleteSauce = (req, res, next) => {
     //on trouve dans la base de donnée
-    Thing.findOne({ _id: req.params.id })
-        .then(thing => {
+    Sauce.findOne({ _id: req.params.id })
+        .then(sauce => {
             // on extrait le nom
-            const filename = thing.imageUrl.split('/images/')[1];
+            const filename = sauce.imageUrl.split('/images/')[1];
             //on supprime
             fs.unlink(`images/${filename}`, () => {
-                Thing.deleteOne({ _id: req.params.id })
+                Sauce.deleteOne({ _id: req.params.id })
                 .then(() => res.status(200).json({ message: 'objet supprimé' }))
                 .catch(error => res.status(400).json({ error }));
             })
@@ -56,57 +55,49 @@ exports.deleteStuff = (req, res, next) => {
 }
 
 // permet de chercher et afficher qu'un objet de manière dynamique en trouvant le Thing unique ayant le même _id que le paramètre de la requête
-exports.selectOneStuff = (req, res, next) => {
-    Thing.findOne({ _id: req.params.id })
-        .then(thing => {
-            console.log(thing);
-            res.status(200).json(thing);
-            console.log(thing);
+exports.selectOneSauce = (req, res, next) => {
+    Sauce.findOne({ _id: req.params.id })
+        .then(sauce => {
+            res.status(200).json(sauce);
         })
         .catch(error => res.status(400).json({ error }));
 }
 
 exports.selectAll = (req, res, next) => {
     // méthode find du modele mongoose qui renvoi un tableau avc tout les Things de la base de donnée
-    Thing.find()
-        .then(things => res.status(200).json(things))
+    Sauce.find()
+        .then(sauces => res.status(200).json(sauces))
         .catch(error => res.status(400).json({ error }));
 }
 
 exports.likeSauce = (req, res, next) => {  
     //met a jour le like dans bdd
-    const thingObject = req.body;
-    console.log(thingObject);
+    const sauceObject = req.body;
+    console.log(sauceObject);
+
+    //status j'aime pour l'userId
+
+    //si like = 1 
+        // userId like sauce
+        // rajoute userId à la liste usersLiked
+        // supprime l'userId de la liste usersDisliked s'il existe
+
+    if (req.body.like == 1) {
+
+    }
 
 
-    //ajouter l'user body.user a la liste 
-
-
-    thingObject.likes ++;
-
-    
-    Thing.updateOne({ _id: req.params.id }, { ...thingObject, _id: req.params.id })
-    .then(() => {
-        res.status(200).json({ message: 'Objet liké' })
-    })
-    .catch(error => res.status(400).json({ error }));
-
-}
-
-
-
-exports.dislikeSauce = (req, res, next) => {  
-    //met a jour le like dans bdd
-    const thingObject = req.body;
-    console.log(thingObject);
-
-
-    //ajouter l'user body.user a la liste 
-
-    thingObject.dislikes += 1;
+    // si like = 0 
+        // annule le like/dislike
+        // supprime l'userId de tout les listes
+    // si like = -1
+        // userId dislike sauce
+        // rajoute userId à la liste de usersDisliked 
+        // supprime l'userId de la liste usersLiked s'il existe
 
     
-    Thing.updateOne({ _id: req.params.id }, { ...thingObject, _id: req.params.id })
+    
+    Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
     .then(() => {
         res.status(200).json({ message: 'Objet liké' })
     })

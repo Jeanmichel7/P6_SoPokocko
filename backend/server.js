@@ -44,9 +44,6 @@ const errorHandler = error => {
 //créer serveur et lance la fonction dés qu'une requete est reçuf
 const server = http.createServer(app);
 
-// écoute les requetes envoyé au port (3000 par défault ou variable environnement)
-//server.listen(process.env.PORT || 3000);
-
 // écouteur d'évenement consignant le port ou le canal nommé sur lequel le serveur s'exécute dans la console
 server.on('error',errorHandler);
 server.on('listening', () => {
@@ -55,4 +52,6 @@ server.on('listening', () => {
     console.log('Listening on ' + bind)
 });
 
+// écoute les requetes envoyé au port (3000 par défault ou variable environnement)
+// server.listen(process.env.PORT || 3000);
 server.listen(port);
