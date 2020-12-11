@@ -1,17 +1,21 @@
 // import le model
 const Thing = require('../models/Thing');
-
 const fs = require('fs');
+
 //exports les controlers
 exports.createThing = (req, res, next) => {
     //exrait l'objet
     const thingObject = JSON.parse(req.body.sauce);
     delete thingObject._id;
-    console.log(req.file.filename);
     const sauce = new Thing({
         //title: req.body.title, etc... ou 
         ...thingObject,
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+        likes: 0,
+        dislikes: 0,
+        usersLiked:"",
+        usersDisliked: ""
+
     });
     console.log(sauce);
     // méthode save qui enregostre le Thing dans la base de donné
@@ -54,7 +58,11 @@ exports.deleteStuff = (req, res, next) => {
 // permet de chercher et afficher qu'un objet de manière dynamique en trouvant le Thing unique ayant le même _id que le paramètre de la requête
 exports.selectOneStuff = (req, res, next) => {
     Thing.findOne({ _id: req.params.id })
-        .then(thing => res.status(200).json(thing))
+        .then(thing => {
+            console.log(thing);
+            res.status(200).json(thing);
+            console.log(thing);
+        })
         .catch(error => res.status(400).json({ error }));
 }
 
@@ -64,3 +72,48 @@ exports.selectAll = (req, res, next) => {
         .then(things => res.status(200).json(things))
         .catch(error => res.status(400).json({ error }));
 }
+
+exports.likeSauce = (req, res, next) => {  
+    //met a jour le like dans bdd
+    const thingObject = req.body;
+    console.log(thingObject);
+
+
+    //ajouter l'user body.user a la liste 
+
+
+    thingObject.likes ++;
+
+    
+    Thing.updateOne({ _id: req.params.id }, { ...thingObject, _id: req.params.id })
+    .then(() => {
+        res.status(200).json({ message: 'Objet liké' })
+    })
+    .catch(error => res.status(400).json({ error }));
+
+}
+
+
+
+exports.dislikeSauce = (req, res, next) => {  
+    //met a jour le like dans bdd
+    const thingObject = req.body;
+    console.log(thingObject);
+
+
+    //ajouter l'user body.user a la liste 
+
+    thingObject.dislikes += 1;
+
+    
+    Thing.updateOne({ _id: req.params.id }, { ...thingObject, _id: req.params.id })
+    .then(() => {
+        res.status(200).json({ message: 'Objet liké' })
+    })
+    .catch(error => res.status(400).json({ error }));
+
+}
+
+
+// ajoute un like
+// ajoute l'utilisateur qui a liké
