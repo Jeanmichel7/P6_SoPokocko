@@ -1,6 +1,8 @@
 // import express
 const express = require('express');
 //import body-parser
+const helmet = require("helmet");
+
 const bodyParser = require('body-parser');
 //import mongoose
 const mongoose = require('mongoose');
@@ -11,7 +13,7 @@ const path = require('path');
 console.log(path);
 require('dotenv').config()
 
-const stuffRoutes = require('./routes/sauce');
+const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
 
 //connect au cluster - base de donnée
@@ -29,12 +31,14 @@ app.use((req, res, next) => {
     next();
 });
 
+//securisation des headers
+app.use(helmet());
 // transforme le corp de la requete en un objet js
 app.use(bodyParser.json());
 //sers un dossier static (chemin : )
 app.use('/images', express.static(path.join(__dirname, 'images')));
 //Route Thing
-app.use('/api/sauces', stuffRoutes);
+app.use('/api/sauces', sauceRoutes);
 //Route user
 app.use('/api/auth', userRoutes);
 
