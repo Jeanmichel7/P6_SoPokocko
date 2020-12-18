@@ -69,12 +69,10 @@ exports.selectAll = (req, res, next) => {
 }
 
 exports.likeSauce = (req, res, next) => {
-    console.log(req.body);
-
-    if (req.body.like === 1) {
-        // récupérer dans la base de donnée
-        Sauce.findOne({ _id: req.params.id })
-            .then(sauce => {
+    // on récupère la recette
+    Sauce.findOne({ _id: req.params.id })
+        .then(sauce => {
+            if (req.body.like === 1) {
                 // si l'user est déja dans la liste des likes
                 if (sauce.usersLiked.includes(req.body.userId)) {
                     console.log("il est déja dans la liste des likes")
@@ -83,20 +81,9 @@ exports.likeSauce = (req, res, next) => {
                     sauce.usersLiked.push(req.body.userId);
                     sauce.usersDisliked.remove(req.body.userId);
                 }
-
-                //met a jour le like dans la bdd 
-                sauce.save()
-                    .then(() => {
-                        res.status(200).json({ message: 'Objet liké' })
-                    })
-                    .catch(error => res.status(400).json({ error }));
-            })
-            .catch(error => res.status(500).json({ error }));
-    }
-    else if (req.body.like === -1) {
-        // récupérer dans la base de donnée
-        Sauce.findOne({ _id: req.params.id })
-            .then(sauce => {
+            }
+            else if (req.body.like === -1) {
+                // si l'utilisateur est déja dans la liste des lislike
                 if (sauce.usersDisliked.includes(req.body.userId)) {
                     console.log("déja dans lislike")
                 }
@@ -104,39 +91,25 @@ exports.likeSauce = (req, res, next) => {
                     sauce.dislikes ++;
                     sauce.usersDisliked.push(req.body.userId);
                     sauce.usersLiked.remove(req.body.userId);
-                } 
-
-                //sauvgerage dans la bbd
-                sauce.save()
-                    .then(() => {
-                        res.status(200).json({ message: 'Objet disliké' })
-                    })
-                    .catch(error => res.status(400).json({ error }));
-            })
-            .catch(error => res.status(500).json({ error }));
-    }
-
-    else if (req.body.like === 0){
-        Sauce.findOne({ _id: req.params.id })
-            .then(sauce => {
-                // si l'user est déja dans la liste des likes
-                if (sauce.usersLiked.includes(req.body.userId)) {       // modif req.body.userId por l'user courant
+                }                      
+            }
+            else if (req.body.like === 0){
+                // si 
+                if (sauce.usersLiked.includes(req.body.userId)) { 
                     sauce.likes --;
-                    sauce.usersLiked.remove(sauce.userId);
+                    sauce.usersLiked.remove(req.body.userId);
                 } 
                 // si l'user est dans les dislike
                 else if (sauce.usersDisliked.includes(req.body.userId)) {
                     sauce.dislikes --;
-                    sauce.usersDisliked.remove(sauce.userId);
+                    sauce.usersDisliked.remove(req.body.userId);
                 }
-
-                //met a jour le like dans la bdd 
-                sauce.save()
-                    .then(() => {
-                        res.status(200).json({ message: 'like modifié' })
-                    })
-                    .catch(error => res.status(400).json({ error }));
-            })
-            .catch(error => res.status(500).json({ error }));
-    }
-}
+            }
+            //met a jour le like dans la bdd 
+            sauce.save()
+                .then(() => {
+                    res.status(200).json({ message: 'Objet liké' })
+                })
+                .catch(error => res.status(400).json({ error }))
+        }).catch(error => res.status(500).json({ error }));
+    };
