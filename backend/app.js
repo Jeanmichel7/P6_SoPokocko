@@ -11,7 +11,7 @@ const app = express();
 //chemin du systeme de fichier
 const path = require('path');
 console.log(path);
-require('dotenv').config()
+require('dotenv').config();
 
 const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');

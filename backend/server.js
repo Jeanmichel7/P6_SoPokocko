@@ -16,6 +16,7 @@ const normalizePort = val => {
     return false;
 };
 
+// écoute les requetes envoyé au port (3000 par défault ou variable environnement)
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
@@ -41,10 +42,10 @@ const errorHandler = error => {
     }
 }
 
-//créer serveur et lance la fonction dés qu'une requete est reçuf
+//crée serveur et lance l'application dés qu'une requete est reçu
 const server = http.createServer(app);
 
-// écouteur d'évenement consignant le port ou le canal nommé sur lequel le serveur s'exécute dans la console
+//écouteur d'évenement consignant le port ou le canal sur lequel le serveur s'exécute
 server.on('error',errorHandler);
 server.on('listening', () => {
     const address = server.address();
@@ -52,6 +53,5 @@ server.on('listening', () => {
     console.log('Listening on ' + bind)
 });
 
-// écoute les requetes envoyé au port (3000 par défault ou variable environnement)
-// server.listen(process.env.PORT || 3000);
+// écoute le port
 server.listen(port);
