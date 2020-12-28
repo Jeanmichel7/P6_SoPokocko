@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-// créé un chema de donnée pour chaque Thing
+// créé un chema de donnée pour chaque Sauce
 const sauceSchema = mongoose.Schema({
     userId: { type:String, required: true },
     name: { type:String, required: true },

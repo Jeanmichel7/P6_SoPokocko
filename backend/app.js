@@ -37,7 +37,7 @@ app.use(helmet());
 app.use(bodyParser.json());
 //sers un dossier static (chemin : )
 app.use('/images', express.static(path.join(__dirname, 'images')));
-//Route Thing
+//Route sauce
 app.use('/api/sauces', sauceRoutes);
 //Route user
 app.use('/api/auth', userRoutes);
