@@ -3,7 +3,7 @@ const Sauce = require('../models/Sauce');
 const User = require('../models/User');
 const fs = require('fs');
 
-//exports les controlers
+//créer une sauce
 exports.createSauce = (req, res, next) => {
     //exrait l'objet
     const sauceObject = JSON.parse(req.body.sauce);
@@ -15,7 +15,7 @@ exports.createSauce = (req, res, next) => {
         likes:0,
         dislikes:0
     });
-    // méthode save qui enregostre le Thing dans la base de donné
+    // méthode .save qui enregistre la sauce dans la base de donné
     sauce.save()
         .then(() => res.status(201).json({ message: 'Objet enregistré' }))
         .catch(error => res.status(400).json({ error }));
@@ -62,7 +62,7 @@ exports.selectOneSauce = (req, res, next) => {
 }
 
 exports.selectAll = (req, res, next) => {
-    // méthode find du modele mongoose qui renvoi un tableau avc tout les Things de la base de donnée
+    // méthode find du modele mongoose qui renvoi un tableau avc toute les sauces de la base de donnée
     Sauce.find()
         .then(sauces => res.status(200).json(sauces))
         .catch(error => res.status(400).json({ error }));
@@ -94,7 +94,7 @@ exports.likeSauce = (req, res, next) => {
                 }                      
             }
             else if (req.body.like === 0){
-                // si 
+                // si l'user a déja liké
                 if (sauce.usersLiked.includes(req.body.userId)) { 
                     sauce.likes --;
                     sauce.usersLiked.remove(req.body.userId);

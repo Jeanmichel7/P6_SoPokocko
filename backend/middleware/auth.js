@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
         // récupère le token via le header
         const token = req.headers.authorization.split(' ')[1];
         // verifie token = clé secrete -> devien objet JS
-        const decodedToken= jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+        const decodedToken= jwt.verify(token, 'tBNq9krgFiK0aR6U61C4vv5MqzHmnDZm');
         // récupère l'userId
         const userId = decodedToken.userId;
         //si l'userId correspond à la requete du token
