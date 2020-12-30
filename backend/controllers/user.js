@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 exports.signup = (req, res, next) => {
   const email = req.body.email;
-  const buffer= Buffer.from(email);
+  const buffer = Buffer.from(email);
   const maskedEmail = buffer.toString('base64');
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
@@ -20,8 +20,6 @@ exports.signup = (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
-
-  // 
   const email = req.body.email;
   const buffer= Buffer.from(email);
   const maskedEmail = buffer.toString('base64');
