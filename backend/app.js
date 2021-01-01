@@ -10,7 +10,6 @@ const mongoose = require('mongoose');
 const app = express();
 //chemin du systeme de fichier
 const path = require('path');
-console.log(path);
 require('dotenv').config();
 
 const sauceRoutes = require('./routes/sauce');

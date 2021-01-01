@@ -13,7 +13,7 @@ router.post('/', auth, multer, sauceCtrl.createSauce);
 router.put('/:id', auth, multer, sauceCtrl.modifySauce);
 // route supprimer
 router.delete('/:id', auth, sauceCtrl.deleteSauce);
-//route get   ( /:id dis a express que ctte apertie est dynamique) donne accès à "req.params.id"
+//route get id
 router.get('/:id', auth, sauceCtrl.selectOneSauce);
 // ROUTE GET - affiche tout les modèles
 router.get('/'+'', auth, sauceCtrl.selectAll);
